@@ -269,9 +269,7 @@ for rn in range(startrow,(startrow + numEpisodes)):
         val = showdata['season'][n][sec] #
 
         print("row :",rn,":","col :",cn,":",val)
+        worksheet.cell(row=rn,column=cn).value = val
+    n += 1
 
-
-
-    #worksheet.cell(row=j,column=testcol).value = "X"
-
-#workbook.save(xlinf)
+workbook.save(xlinf)
