@@ -10,10 +10,58 @@ sys.path.append('/Users/ronperez/Desktop/Stuff/Programming/python/modules')
 
 import openpyxl
 
+firstCol = 2       #first column of worksheet is 2 (that data is written to)
+firstRow = 5       #first row    of worksheet is 5 (tat data we need is in)
+
+#define alphabet dictionary
+letterDictionary = {
+    'A' : 1,
+    'B' : 2,
+    'C' : 3,
+    'D' : 4,
+    'E' : 5,
+    'F' : 6,
+    'G' : 7,
+    'H' : 8,
+    'I' : 9,
+    'J' : 10,
+    'K' : 11,
+    'L' : 12,
+    'M' : 13,
+    'N' : 14,
+    'O' : 15,
+    'P' : 16,
+    'Q' : 17,
+    'R' : 18,
+    'S' : 19,
+    'T' : 20,
+    'U' : 21,
+    'V' : 22,
+    'W' : 23,
+    'X' : 24,
+    'Y' : 25,
+    'Z' : 26
+}
+
+#converts the xl cells to their corresponding number
+def getColumnNumber(col):
+
+    sum = 0
+    power = len(col) - 1
+
+    for l in col:
+        l = l.upper()
+        n = letterDictionary[l]
+        sum += n * (26 ** power)
+        power -= 1
+
+    return sum
+
 
 #get input file from user
 def getInputFile():
 
+    print("")
     while True:
         inf = input("Give me your input file: ")
         if os.path.exists(inf):
@@ -23,21 +71,18 @@ def getInputFile():
 
     return inf
 
-def readWS(ws):
+def getXLModifyCols(ws,endRow,endCol):
 
-    #set the start of where to read from input xlSheet
-    startRow = 5
-    startCol = 2
+    d = {}    #define an empty dictionary
 
-    endRow = 100
-    endCol = 34
+    rowCount = firstRow  # a counter to keep track of the row I am on
+    colCount = firstCol  #  counter to keep track of the col I am on
 
+    #read the contents
+    for category in ws.iter_rows(min_row=firstRow,min_col=firstCol,max_row=endRow,max_col=endCol,values_only=True):
 
-    rowCount = startRow
-
-    for value in ws.iter_rows(min_row=startRow,min_col=startCol,max_row=endRow,max_col=endCol,values_only=True):
-        #left off here
-        #
+        """
+        #Commented out all this in case needed later
         Filename         = value[0]
         Title            = value[1]
         Description      = value[2]
@@ -71,12 +116,73 @@ def readWS(ws):
         BuzzrID          = value[30]
         DMHScope         = value[31]
         VTR              = value[32]
-        print(rowCount,Keywords)
-        rowCount += 1
-        #######################
+        """
+        print("\nAnalyzing xl sheet.....")
 
-xlinf = getInputFile()
+
+    for i in range (0,len(category)):
+        #print(i,category[i])
+        """
+        #Before replacements
+        Filename
+        Format
+        Subtitle Language
+        Sub-Genre
+        Program Version
+        SCC Filename \n(No extension)
+        House Number
+        """
+        word = category[i]
+        word = word.lower()
+        word = word.replace("\n","")
+        word = word.replace(" ","")
+        word = word.replace("#","num")
+        word = word.replace("-","")
+        word = word.replace(".","")
+        word = word.replace("(noextension)","")
+        #print(i,word)
+        n = firstCol + i  #the column number is offset by 2, becuase first data is in column B which is 2
+        d[word] = n       #add the word and column to the hash
+        """
+        #After replacements
+        filename
+        format
+        subtitlelanguage
+        subgenre
+        programversion
+        sccfilename
+        housenumber
+        """
+
+    return d
+
+
+
+
+
+
+#get the last column from the user, as a integer
+def getLastCol():
+
+    print("")
+    while True:
+        col = input("Give me the last column in your sheet ie [AA]: ")
+        m = re.match('^[a-zA-Z]+$',col)
+        if m:
+            col = col.upper()
+            #print(col)
+            break
+        else:
+            print("  Invlaid Format")
+
+    return getColumnNumber(col)
+
+
+xlinf   = getInputFile()
+lastCol = getLastCol()   #lastCol returned as integer
+
+
 workbook  = openpyxl.load_workbook(filename=xlinf) #set the load_workbook
 worksheet = workbook["1. Master Metadata"]         #set the name of the worksheet to read (later have user enter)
-
-readWS(worksheet)
+categorydict = getXLModifyCols(worksheet,5,lastCol)               #got latCol from user, hardcoding 5 right now
+#print(categorydict)
