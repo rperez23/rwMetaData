@@ -275,3 +275,4 @@ for rn in range(startrow,(startrow + numEpisodes)):
     n += 1
 
 workbook.save(xlinf)
+workbook.close()
