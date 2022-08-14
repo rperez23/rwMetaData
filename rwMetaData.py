@@ -8,7 +8,7 @@ import shutil
 import json
 
 warnings.filterwarnings("ignore")
-sys.path.append('/Users/ronperez/Desktop/Stuff/Programming/python/modules')
+sys.path.append('/Users/ronnieperez/Desktop/Stuff/Programming/python/modules')
 
 import openpyxl
 
