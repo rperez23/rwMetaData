@@ -148,7 +148,6 @@ def getXLModifyCols(ws,endRow,endCol):
         n = firstCol + i  #the column number is offset by 2, becuase first data is in column B which is 2
         d[word] = n       #add the word and column to the hash
         """
-        #After replacements
         filename
         format
         subtitlelanguage
