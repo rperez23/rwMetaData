@@ -261,6 +261,7 @@ showdata = readJSON()
 startcol = firstCol
 startrow = firstRow + 1
 
+print("")
 n = 0
 for rn in range(startrow,(startrow + numEpisodes)):
 
@@ -268,8 +269,9 @@ for rn in range(startrow,(startrow + numEpisodes)):
         cn  = categorydict[sec]          #column number
         val = showdata['season'][n][sec] #
 
-        print("row :",rn,":","col :",cn,":",val)
+        print("row",rn,":",sec,":",val)
         worksheet.cell(row=rn,column=cn).value = val
+        print("===========")
     n += 1
 
 workbook.save(xlinf)
