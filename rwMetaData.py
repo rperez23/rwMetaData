@@ -148,14 +148,24 @@ def getXLModifyCols(ws,endRow,endCol):
         n = firstCol + i  #the column number is offset by 2, becuase first data is in column B which is 2
         d[word] = n       #add the word and column to the hash
         """
-        filename
-        format
-        subtitlelanguage
-        subgenre
-        programversion
-        sccfilename
-        housenumber
+        #filename
+        #format
+        #subtitlelanguage
+        #subgenre
+        #programversion
+        #sccfilename
+        #housenumber
+
+        {'filename': 'HoneyIRuinedTheHouse_FastChannel_s2_e1_20220506.mxf',
+         'programversion': 'On-line Platform',
+         'sccfilename': 'HoneyIRuinedTheHouse_FastChannel_s2_e1_20220506.scc',
+         'housenumber': 'BUZ_HIRH00009',
+         'subtitlelanguage': 'English',
+         'subgenre': 'Travel',
+         'format': 'Home Channel'}
         """
+
+    #lets do a check to see if all of these were found
 
     return d
 
