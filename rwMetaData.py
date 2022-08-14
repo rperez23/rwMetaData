@@ -166,6 +166,18 @@ def getXLModifyCols(ws,endRow,endCol):
         """
 
     #lets do a check to see if all of these were found
+    section_list = ["filename", "format", "subtitlelanguage", "subgenre", "programversion", "sccfilename", "housenumber"]
+
+    rat = 0
+    for section in section_list:
+
+        if not (section in d):
+            print("\n  ",section,"could not be found in xl file:")
+            rat += 1
+
+    if rat > 0:
+        print("")
+        sys.exit(1)
 
     return d
 
