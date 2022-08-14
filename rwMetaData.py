@@ -16,6 +16,8 @@ firstRow = 5       #first row    of worksheet is 5 (tat data we need is in)
 
 jsonf = "fastchannel.json"
 
+section_list = ["filename", "format", "subtitlelanguage", "subgenre", "programversion", "sccfilename", "housenumber"]
+
 #define alphabet dictionary
 letterDictionary = {
     'A' : 1,
@@ -168,8 +170,6 @@ def getXLModifyCols(ws,endRow,endCol):
         """
 
     #lets do a check to see if all of these were found
-    section_list = ["filename", "format", "subtitlelanguage", "subgenre", "programversion", "sccfilename", "housenumber"]
-
     rat = 0
     for section in section_list:
 
@@ -245,3 +245,21 @@ numEpisodes = countNumEpisodes()
 
 
 #Lets do this left off here
+#Test writing
+
+startcol = firstCol
+startrow = firstRow + 1
+
+for rn in range(startrow,(startrow + numEpisodes)):
+
+    for sec in section_list:
+        cn = categorydict[sec]
+        #aw =
+
+        print("row :",rn,":","col :",cn)
+
+
+
+    #worksheet.cell(row=j,column=testcol).value = "X"
+
+#workbook.save(xlinf)
