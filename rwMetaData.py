@@ -4,6 +4,7 @@ import os
 import re
 import sys
 import warnings
+import shutil
 
 warnings.filterwarnings("ignore")
 sys.path.append('/Users/ronperez/Desktop/Stuff/Programming/python/modules')
@@ -60,6 +61,9 @@ def getColumnNumber(col):
 
 #get input file from user
 def getInputFile():
+
+    #Need to add check for extension
+    #openpyxl.utils.exceptions.InvalidFileException: openpyxl does not support .backup file format, please check you can open it with Excel first. Supported formats are: .xlsx,.xlsm,.xltx,.xltm
 
     print("")
     while True:
@@ -177,12 +181,23 @@ def getLastCol():
 
     return getColumnNumber(col)
 
+#make a backup of the xl file becuase we will modify the original
+def backupWB(xlinf):
+
+    newf = xlinf + ".backup"
+    print("\nMaking backup file")
+    try:
+        shutil.copyfile(xlinf,newf)
+    except:
+        print("Error copying backup file")
+
+
 
 xlinf   = getInputFile()
 lastCol = getLastCol()   #lastCol returned as integer
 
 
-workbook  = openpyxl.load_workbook(filename=xlinf) #set the load_workbook
-worksheet = workbook["1. Master Metadata"]         #set the name of the worksheet to read (later have user enter)
-categorydict = getXLModifyCols(worksheet,5,lastCol)               #got latCol from user, hardcoding 5 right now
-#print(categorydict)
+workbook  = openpyxl.load_workbook(filename=xlinf)  #set the load_workbook
+worksheet = workbook["1. Master Metadata"]          #set the name of the worksheet to read (later have user enter)
+categorydict = getXLModifyCols(worksheet,5,lastCol) #got latCol from user, hardcoding 5 right now
+backupWB(xlinf) #copy the workbook
