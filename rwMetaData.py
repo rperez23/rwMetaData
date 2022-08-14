@@ -5,6 +5,7 @@ import re
 import sys
 import warnings
 import shutil
+import json
 
 warnings.filterwarnings("ignore")
 sys.path.append('/Users/ronperez/Desktop/Stuff/Programming/python/modules')
@@ -228,7 +229,17 @@ def countNumEpisodes():
             n += 1;
     return n
 
+#read the json file
+def readJSON():
 
+    jsonf = "fastchannel.json"
+
+    # Opening JSON file
+    f = open(jsonf)
+    data = json.load(f)
+    f.close()
+
+    return data
 
 
 xlinf   = getInputFile()
@@ -244,19 +255,20 @@ numEpisodes = countNumEpisodes()
 #print("Number of episodes :",numEpisodes)
 
 
-#Lets do this left off here
-#Test writing
+showdata = readJSON()
+
 
 startcol = firstCol
 startrow = firstRow + 1
 
+n = 0
 for rn in range(startrow,(startrow + numEpisodes)):
 
     for sec in section_list:
-        cn = categorydict[sec]
-        #aw =
+        cn  = categorydict[sec]          #column number
+        val = showdata['season'][n][sec] #
 
-        print("row :",rn,":","col :",cn)
+        print("row :",rn,":","col :",cn,":",val)
 
 
 
