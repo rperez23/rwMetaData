@@ -14,6 +14,8 @@ import openpyxl
 firstCol = 2       #first column of worksheet is 2 (that data is written to)
 firstRow = 5       #first row    of worksheet is 5 (tat data we need is in)
 
+jsonf = "fastchannel.json"
+
 #define alphabet dictionary
 letterDictionary = {
     'A' : 1,
@@ -212,6 +214,21 @@ def backupWB(xlinf):
     except:
         print("Error copying backup file")
 
+def countNumEpisodes():
+
+    n = 0;
+    f  = open(jsonf,"r")
+    for l in f.readlines():
+        l = l.rstrip()
+
+        pattern = '"housenumber"'
+
+        m = re.search(pattern,l)
+        if m:
+            n += 1;
+    return n
+
+
 
 
 xlinf   = getInputFile()
@@ -222,3 +239,9 @@ workbook  = openpyxl.load_workbook(filename=xlinf)  #set the load_workbook
 worksheet = workbook["1. Master Metadata"]          #set the name of the worksheet to read (later have user enter)
 categorydict = getXLModifyCols(worksheet,5,lastCol) #got latCol from user, hardcoding 5 right now
 backupWB(xlinf) #copy the workbook
+
+numEpisodes = countNumEpisodes()
+#print("Number of episodes :",numEpisodes)
+
+
+#Lets do this left off here
