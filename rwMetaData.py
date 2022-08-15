@@ -6,11 +6,25 @@ import sys
 import warnings
 import shutil
 import json
+import argparse
 
 warnings.filterwarnings("ignore")
-sys.path.append('/Users/ronnieperez/Desktop/Stuff/Programming/python/modules')
+#may not need this
+#sys.path.append('/Users/ronnieperez/Desktop/Stuff/Programming/python/modules')
 
 import openpyxl
+
+warnings.simplefilter(action='ignore', category=UserWarning)
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument('--xlf',  type=str, required=True)
+parser.add_argument('--lcol', type=str, required=True)
+
+args = parser.parse_args()
+
+xlinf   = args.xlf
+lastCol = int(args.lcol)
 
 firstCol = 2       #first column of worksheet is 2 (that data is written to)
 firstRow = 5       #first row    of worksheet is 5 (tat data we need is in)
@@ -64,11 +78,9 @@ def getColumnNumber(col):
     return sum
 
 
+"""
 #get input file from user
 def getInputFile():
-
-    #Need to add check for extension
-    #openpyxl.utils.exceptions.InvalidFileException: openpyxl does not support .backup file format, please check you can open it with Excel first. Supported formats are: .xlsx,.xlsm,.xltx,.xltm
 
     print("")
     while True:
@@ -79,6 +91,7 @@ def getInputFile():
             print("   Does not exist")
 
     return inf
+"""
 
 def getXLModifyCols(ws,endRow,endCol):
 
@@ -91,40 +104,6 @@ def getXLModifyCols(ws,endRow,endCol):
     for category in ws.iter_rows(min_row=firstRow,min_col=firstCol,max_row=endRow,max_col=endCol,values_only=True):
 
         """
-        #Commented out all this in case needed later
-        Filename         = value[0]
-        Title            = value[1]
-        Description      = value[2]
-        WazeeCategory    = value[3]
-        Format           = value[4]
-        SubtitleLanguage = value[5]
-        AudioLanguage    = value[6]
-        ReleaseDate      = value[7]
-        Season           = value[8]
-        Episode          = value[9]
-        EpisodeName      = value[10]
-        DevelopmentType  = value[11]
-        Genre            = value[12]
-        SubGenre         = value[13]
-        Host             = value[14]
-        Panel            = value[15]
-        Actors           = value[16]
-        Guests           = value[17]
-        Models           = value[18]
-        Contestants      = value[19]
-        Announcer        = value[20]
-        Narrator         = value[21]
-        ProgramVersion   = value[22]
-        Color            = value[23]
-        Keywords         = value[24]
-        SCCFilename      = value[25]
-        BoxcomURL        = value[26]
-        PosterFrameTimeStart = value[27]
-        SccOffset        = value[28]
-        HouseNumber      = value[29]
-        BuzzrID          = value[30]
-        DMHScope         = value[31]
-        VTR              = value[32]
         """
         print("\nAnalyzing xl sheet.....")
 
@@ -132,14 +111,6 @@ def getXLModifyCols(ws,endRow,endCol):
     for i in range (0,len(category)):
         #print(i,category[i])
         """
-        #Before replacements
-        Filename
-        Format
-        Subtitle Language
-        Sub-Genre
-        Program Version
-        SCC Filename \n(No extension)
-        House Number
         """
         word = category[i]
         word = word.lower()
@@ -153,21 +124,6 @@ def getXLModifyCols(ws,endRow,endCol):
         n = firstCol + i  #the column number is offset by 2, becuase first data is in column B which is 2
         d[word] = n       #add the word and column to the hash
         """
-        #filename
-        #format
-        #subtitlelanguage
-        #subgenre
-        #programversion
-        #sccfilename
-        #housenumber
-
-        {'filename': 'HoneyIRuinedTheHouse_FastChannel_s2_e1_20220506.mxf',
-         'programversion': 'On-line Platform',
-         'sccfilename': 'HoneyIRuinedTheHouse_FastChannel_s2_e1_20220506.scc',
-         'housenumber': 'BUZ_HIRH00009',
-         'subtitlelanguage': 'English',
-         'subgenre': 'Travel',
-         'format': 'Home Channel'}
         """
 
     #lets do a check to see if all of these were found
@@ -184,11 +140,7 @@ def getXLModifyCols(ws,endRow,endCol):
 
     return d
 
-
-
-
-
-
+"""
 #get the last column from the user, as a integer
 def getLastCol():
 
@@ -204,6 +156,7 @@ def getLastCol():
             print("  Invlaid Format")
 
     return getColumnNumber(col)
+"""
 
 #make a backup of the xl file becuase we will modify the original
 def backupWB(xlinf):
@@ -241,10 +194,8 @@ def readJSON():
 
     return data
 
-
-xlinf   = getInputFile()
-lastCol = getLastCol()   #lastCol returned as integer
-
+#xlinf   = getInputFile()
+#lastCol = getLastCol(lcnum)   #lastCol returned as integer
 
 workbook  = openpyxl.load_workbook(filename=xlinf)  #set the load_workbook
 worksheet = workbook["1. Master Metadata"]          #set the name of the worksheet to read (later have user enter)
@@ -256,7 +207,6 @@ numEpisodes = countNumEpisodes()
 
 
 showdata = readJSON()
-
 
 startcol = firstCol
 startrow = firstRow + 1
